@@ -61,6 +61,22 @@ jobs:
       run: |
         pytest tests/test_integration.py -v
     
+    - name: Install Playwright
+      run: |
+        pip install pytest-playwright
+        playwright install --with-deps
+
+    - name: Run E2E tests
+      env:
+        DATABASE_URL: postgresql://user:password@localhost:5432/secure_app_test
+      run: |
+        # Start the app in the background
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+        # Wait for it to be ready
+        sleep 5
+        # Run tests
+        pytest tests/test_e2e.py -v
+
     - name: Generate coverage report
       env:
         DATABASE_URL: postgresql://user:password@localhost:5432/secure_app_test

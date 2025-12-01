@@ -1,10 +1,38 @@
 """
-Password hashing utilities using bcrypt.
+Password hashing utilities using bcrypt and JWT token generation.
 
-Provides secure password hashing and verification functions.
+Provides secure password hashing, verification functions, and JWT handling.
 """
 import bcrypt
+from datetime import datetime, timedelta
+from jose import jwt
+import os
 
+# Configuration
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-keep-it-secret")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    """
+    Create a JWT access token.
+    
+    Args:
+        data: Dictionary containing claims to encode
+        expires_delta: Optional expiration time delta
+        
+    Returns:
+        Encoded JWT string
+    """
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
 def hash_password(password: str) -> str:
     """

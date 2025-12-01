@@ -420,15 +420,43 @@ docker run -p 8000:8000 \
 
 **Note**: Replace `YOUR_USERNAME` with your actual Docker Hub username.
 
-### Module 12 Assignment Submission
+### Module 13 Assignment Submission
 
-This repository fulfills Module 12 requirements:
-- ✅ User Registration and Login endpoints
-- ✅ Calculation BREAD endpoints (Browse, Read, Edit, Add, Delete)
-- ✅ Integration tests for User and Calculation endpoints
-- ✅ CI/CD pipeline updated and passing
-- ✅ Docker image builds and pushes to Docker Hub
-- ✅ Complete documentation (README + REFLECTION)
+This repository fulfills Module 13 requirements:
+- ✅ JWT Authentication (Login/Register)
+- ✅ Front-end pages (Register/Login) with client-side validation
+- ✅ Playwright E2E tests
+- ✅ CI/CD pipeline updated with Playwright tests
+
+## Running Front-End and E2E Tests
+
+### Running Front-End
+
+1. Start the application:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+2. Open your browser to:
+   - Register: `http://localhost:8000/static/register.html`
+   - Login: `http://localhost:8000/static/login.html`
+
+### Running Playwright E2E Tests
+
+1. Install dependencies:
+   ```bash
+   pip install pytest-playwright
+   playwright install
+   ```
+
+2. Ensure the application is running (in a separate terminal):
+   ```bash
+   uvicorn app.main:app --port 8000
+   ```
+
+3. Run the tests:
+   ```bash
+   pytest tests/test_e2e.py -v
+   ```
 
 ## Development Workflow
 

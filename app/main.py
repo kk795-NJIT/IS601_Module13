@@ -2,6 +2,7 @@
 Main FastAPI application with user management endpoints.
 """
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from typing import List
@@ -12,7 +13,7 @@ from app.schemas import (
     UserCreate, UserRead, UserUpdate, UserLogin,
     CalculationCreate, CalculationRead, CalculationUpdate, OperationType
 )
-from app.security import hash_password, verify_password
+from app.security import hash_password, verify_password, create_access_token
 
 # Create all tables on startup
 Base.metadata.create_all(bind=engine)
@@ -23,6 +24,8 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.on_event("startup")
 async def startup_event():
@@ -103,7 +106,8 @@ async def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
             detail="Invalid username or password"
         )
     
-    return {"message": "Login successful", "user_id": str(user.id)}
+    access_token = create_access_token(data={"sub": user.username})
+    return {"access_token": access_token, "token_type": "bearer", "user_id": str(user.id)}
 
 @app.get("/users/{user_id}", response_model=UserRead, tags=["Users"])
 async def get_user(user_id: str, db: Session = Depends(get_db)) -> UserRead:
