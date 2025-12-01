@@ -821,3 +821,40 @@ This foundation is production-ready and well-positioned for Module 12 endpoint i
 - **FastAPI Routing**: structuring endpoints for clarity.
 - **Pydantic V2**: nuances of validation decorators.
 - **Integration Testing**: importance of testing the full request/response cycle with a real database.
+# Module 13 Reflection
+
+## Objectives Achieved
+
+### 1. JWT Authentication ✅
+- Implemented `POST /users/login` to return a JWT access token.
+- Updated `POST /users/register` to handle user creation securely.
+- Integrated `python-jose` for token generation and validation.
+
+### 2. Front-End Implementation ✅
+- Created `static/register.html` and `static/login.html` for user interaction.
+- Implemented client-side validation for email format and password length.
+- Used JavaScript (`static/js/auth.js`) to handle form submissions and store JWT tokens in `localStorage`.
+
+### 3. Playwright E2E Testing ✅
+- Implemented End-to-End tests using Playwright in `tests/test_e2e.py`.
+- Covered positive scenarios: Successful registration and login.
+- Covered negative scenarios: Invalid credentials, short passwords, and UI error messages.
+- Verified that the UI correctly reflects the application state (success/error messages).
+
+### 4. CI/CD Pipeline Enhancements ✅
+- Updated GitHub Actions workflow to include Playwright testing.
+- Configured the pipeline to install Playwright browsers and dependencies.
+- Ensured that E2E tests run alongside unit and integration tests before deployment.
+
+## Challenges & Solutions
+
+- **Integration Test Regression**: After switching to JWT, the existing `test_login_success` integration test failed because it expected a JSON message but received a token.
+  - **Solution**: Updated the test to assert the presence of `access_token` and `token_type` in the response, aligning the test with the new API contract.
+- **CI/CD Pipeline Configuration**: Ensuring Playwright browsers were installed and the server was running in the background during the CI process.
+  - **Solution**: Used `uvicorn` to start the server in the background and `wait-on` (or similar logic) to ensure readiness before running tests.
+
+## Key Learnings
+
+- **JWT Security**: Understanding the flow of issuing and verifying JSON Web Tokens for stateless authentication.
+- **E2E Testing with Playwright**: Learned how to automate browser interactions to test the full application stack, from UI to backend.
+- **Full Stack Integration**: Connecting a raw HTML/JS frontend to a FastAPI backend and handling authentication state on the client side.
