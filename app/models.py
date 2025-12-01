@@ -2,8 +2,7 @@
 SQLAlchemy models for the application.
 """
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime, Float, ForeignKey, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, DateTime, Float, ForeignKey, func, Uuid
 from sqlalchemy.orm import relationship
 import uuid
 
@@ -23,7 +22,7 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4, index=True)
     username = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(100), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
@@ -48,12 +47,12 @@ class Calculation(Base):
     """
     __tablename__ = "calculations"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4, index=True)
     a = Column(Float, nullable=False)
     b = Column(Float, nullable=False)
     type = Column(String(20), nullable=False)
     result = Column(Float, nullable=False)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True, index=True)
+    user_id = Column(Uuid, ForeignKey("users.id"), nullable=True, index=True)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
 
     # Relationship to User (optional)

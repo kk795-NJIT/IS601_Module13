@@ -852,9 +852,12 @@ This foundation is production-ready and well-positioned for Module 12 endpoint i
   - **Solution**: Updated the test to assert the presence of `access_token` and `token_type` in the response, aligning the test with the new API contract.
 - **CI/CD Pipeline Configuration**: Ensuring Playwright browsers were installed and the server was running in the background during the CI process.
   - **Solution**: Used `uvicorn` to start the server in the background and `wait-on` (or similar logic) to ensure readiness before running tests.
+- **Local Environment Issues**: Encountered issues running Docker locally on macOS due to missing `docker-compose` command.
+  - **Solution**: Switched to using a local SQLite database for testing purposes, allowing E2E tests to run successfully without Docker dependency.
 
 ## Key Learnings
 
 - **JWT Security**: Understanding the flow of issuing and verifying JSON Web Tokens for stateless authentication.
 - **E2E Testing with Playwright**: Learned how to automate browser interactions to test the full application stack, from UI to backend.
 - **Full Stack Integration**: Connecting a raw HTML/JS frontend to a FastAPI backend and handling authentication state on the client side.
+- **Environment Adaptability**: Learned to adapt testing strategies (switching DBs) when primary tools (Docker) face environment-specific hurdles.
