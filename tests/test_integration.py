@@ -198,8 +198,10 @@ class TestUserLogin:
         }
         response = client.post("/users/login", json=login_data)
         assert response.status_code == 200
-        assert response.json()["message"] == "Login successful"
-        assert "user_id" in response.json()
+        data = response.json()
+        assert "access_token" in data
+        assert data["token_type"] == "bearer"
+        assert "user_id" in data
 
     def test_login_invalid_password(self, client):
         """Test login with invalid password."""
